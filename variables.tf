@@ -1,41 +1,57 @@
-
-# required for AWS
-variable "region" {
-    default = "ap-southeast-2"
+variable "project_name" {}
+variable "aws_region" {
+  description = "AWS region to launch servers."
+  default     = "us-west-1"
+}
+variable "aws_az" {
+  default = "all"
+}
+variable "want_ha" {
+  default = "1"
 }
 
-variable bucket_name {
-	description = "name of the bucket that will use as origin for CDN"
-	default = "maniflexx-cdn-bucket"
+variable "public_key_path" {
+  description = <<DESCRIPTION
+Path to the SSH public key to be used for authentication.
+Ensure this keypair is added to your local SSH agent so provisioners can
+connect.
+
+Example: ~/.ssh/terraform.pub
+DESCRIPTION
+default = "~/.ssh/2tier-apache_rsa.pub"
 }
 
-variable retain_on_delete {
-	description = "Instruct CloudFront to simply disable the distribution instead of delete"
-	default = false
+variable "key_name" {
+  description = "Desired name of AWS key pair"
+  default = "2tier-apache"
+}
+variable "vpc_name" {
+  description = "Desired name of vpc to create"
+  default = "2tier-apache"
 }
 
-variable price_class {
-	description = "Price classes provide you an option to lower the prices you pay to deliver content out of Amazon CloudFront"
-	default = "PriceClass_All"
+variable "vpc_cidr_block" {
+  description = "Desired cidr block of vpc to create"
+  default = "192.168.1.0/24"
 }
 
-variable hosted_zone_id {
-  description = "ID for the domain hosted zone"
-  default = "ZTXJMHC7JVNF5"
-}
+#variable "aws_region" {
+#  description = "AWS region to launch servers."
+#  default     = "us-west-1"
+#}
 
-variable domain_name {
-  description = "Name of the domain where record(s) need to create"
-  default = "maniflexx.com"
-}
 
-variable route53_record_name {
-	description = "Name of the record that you want to create for CDN"
-	default = "maniflexx-cdn"
-}
+# variable "aws_az" {
+#  description = "AWS availability zones to launch servers."
+#  default     = {
+#    "0" = "us-west-1a"
+#    "1" = "us-west-1b"
+#  }
+#}
 
-variable alias_zone_id {
-	description = "Fixed hardcoded constant zone_id that is used for all CloudFront distributions"
-	default = "ZTXJMHC7JVNF5"
+# Ubuntu Precise 16.04 LTS (x64) With Apache and Dan's web page
+variable "aws_amis" {
+  default = {
+    us-west-1 = "ami-9698c7f6"
+  }
 }
-
